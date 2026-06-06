@@ -14,7 +14,9 @@ Use this reference when generating visual cards or when adding lightweight inlin
   - `weapon`: icon variants.
   - `artifact`: individual artifact piece icons.
   - `artifact_set`: representative set icons when page images exist.
-- Optimized storage may use WebP for large character card art and artifact-set previews. Artifact-set previews preserve animation timing and frame content unless a toolchain with reliable per-frame duration support is used. `query_asset_cache.py --thumb-size` emits PNG thumbnails for Codex Markdown display compatibility.
+- Optimized storage uses WebP for most source images: character card art, weapon icons, artifact piece icons, and artifact-set previews. A few tiny PNG sources may remain PNG when WebP is larger.
+- Artifact-set previews may be animated WebP. Frame reduction preserves total animation duration and canvas dimensions.
+- Generated thumbnail files under `thumbnails/` intentionally remain PNG. `query_asset_cache.py --thumb-size` emits those PNG thumbnails for compact Markdown tables, rich text answers, and report metadata.
 - Korean aliases are extracted from wiki `ko` / `1_ko` fields when visible, so common Korean queries such as `유라`, `라이덴`, `예초`, `창백`, and `절연` should resolve without manual relabeling.
 
 ## Required lookup workflow
@@ -82,7 +84,7 @@ python "$env:USERPROFILE\.codex\skills\genshin-consultant\scripts\build_asset_ca
 ```
 
 Use `--refresh` only when existing files are stale or corrupted.
-After a full rebuild, run `scripts/optimize_asset_cache.py --apply` to shrink large character card art and static artifact-set previews before committing the cache.
+After a full rebuild, run `scripts/optimize_asset_cache.py --include-weapons --include-artifacts --artifact-frame-step 2 --apply` to restore the optimized WebP layout before committing the cache.
 
 ## Output contract
 
